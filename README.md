@@ -1,4 +1,7 @@
 # aborakanon_rcraps
+**Timeout()**: Error disebabkan oleh operasi yang melebihi batas waktu yang ditentukan.
+**Temporary()**: Error bersifat sementara dan operasi bisa diulang kembali setelah beberapa saat.
+
 ```golang
 package main
 
