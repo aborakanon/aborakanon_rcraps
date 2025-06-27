@@ -143,7 +143,7 @@ if __name__ == "__main__":
 
 ```
 
-```python**
+```python
 import socket
 
 def main():
