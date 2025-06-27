@@ -184,4 +184,60 @@ if __name__ == "__main__":
 
 ```
 
+```golang
+package main
+
+import (
+	"fmt"
+	"net"
+	"os"
+	"time"
+)
+
+func main() {
+	// 1. Buat koneksi TCP ke server dengan timeout 5 detik
+	conn, err := net.DialTimeout("tcp", "httpbin.org:80", 5*time.Second)
+	if err != nil {
+		fmt.Println("Error: Gagal membuat koneksi:", err)
+		os.Exit(1)
+	}
+	defer conn.Close()
+
+	// 2. Kirim HTTP GET request
+	request := "GET /get HTTP/1.1\r\nHost: httpbin.org\r\nUser-Agent: Go-Client\r\nConnection: close\r\n\r\n"
+	_, err = conn.Write([]byte(request))
+	if err != nil {
+		fmt.Println("Error: Gagal mengirim request:", err)
+		os.Exit(1)
+	}
+
+	// 3. Set timeout untuk membaca response (5 detik)
+	conn.SetReadDeadline(time.Now().Add(5 * time.Second))
+
+	// 4. Baca seluruh response dari server
+	var response []byte
+	buf := make([]byte, 1024) // Buffer untuk membaca data dalam chunk 1024 byte
+	for {
+		n, err := conn.Read(buf) // Baca data dari koneksi
+		if err != nil {
+			// Cek apakah error disebabkan oleh timeout
+			if netErr, ok := err.(net.Error); ok && netErr.Timeout() {
+				fmt.Println("Error: Timeout saat membaca response dari server")
+			} else {
+				fmt.Println("Error: Gagal membaca response:", err)
+			}
+			break
+		}
+		response = append(response, buf[:n]...) // Tambahkan data ke response
+	}
+
+	// 5. Tampilkan response
+	fmt.Println("Response dari server:")
+	fmt.Println(string(response))
+
+	// 6. Exit dengan kode 0 (sukses)
+	os.Exit(0)
+}
+
+```
 
