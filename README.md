@@ -143,5 +143,45 @@ if __name__ == "__main__":
 
 ```
 
+```python**
+import socket
+
+def main():
+    try:
+        # 1. Buat koneksi TCP ke server dengan timeout 5 detik
+        conn = socket.create_connection(("httpbin.org", 80), timeout=5)
+        conn.settimeout(5)  # Set timeout untuk membaca response
+
+        # 2. Kirim HTTP GET request
+        request = "GET /get HTTP/1.1\r\nHost: httpbin.org\r\nUser-Agent: Python-Client\r\nConnection: close\r\n\r\n"
+        conn.sendall(request.encode())
+
+        # 3. Baca seluruh response dari server
+        response = b""  # Inisialisasi variabel untuk menyimpan response
+        while True:
+            data = conn.recv(1024)  # Baca 1024 byte setiap iterasi
+            if not data:
+                break  # Jika tidak ada data lagi, keluar dari loop
+            response += data  # Tambahkan data ke response
+
+        # 4. Tampilkan response
+        print("Response dari server:")
+        print(response.decode())
+
+    except socket.timeout:
+        # Handle timeout saat membaca response
+        print("Error: Timeout saat membaca response dari server")
+    except socket.error as err:
+        # Handle error lainnya
+        print(f"Error: Gagal melakukan operasi socket: {err}")
+    finally:
+        # 5. Tutup koneksi
+        if 'conn' in locals():
+            conn.close()
+
+if __name__ == "__main__":
+    main()
+
+```
 
 
