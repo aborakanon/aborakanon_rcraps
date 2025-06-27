@@ -104,5 +104,44 @@ func main() {
 
 ```
 
+```python
+import socket
+
+def main():
+    try:
+        # 1. Buat koneksi TCP ke server dengan timeout 5 detik
+        conn = socket.create_connection(("httpbin.org", 80), timeout=5)
+        conn.settimeout(5)  # Set timeout untuk membaca response
+
+        # 2. Kirim HTTP GET request
+        request = "GET /get HTTP/1.1\r\nHost: httpbin.org\r\nUser-Agent: Python-Client\r\nConnection: close\r\n\r\n"
+        conn.sendall(request.encode())
+
+        # 3. Baca response dari server
+        response = conn.recv(1024)  # Baca hingga 1024 byte
+        if not response:
+            print("Error: Tidak ada response dari server")
+            return
+
+        # 4. Tampilkan response
+        print("Response dari server:")
+        print(response.decode())
+
+    except socket.timeout:
+        # Handle timeout saat membaca response
+        print("Error: Timeout saat membaca response dari server")
+    except socket.error as err:
+        # Handle error lainnya
+        print(f"Error: Gagal melakukan operasi socket: {err}")
+    finally:
+        # 5. Tutup koneksi
+        if 'conn' in locals():
+            conn.close()
+
+if __name__ == "__main__":
+    main()
+
+```
+
 
 
