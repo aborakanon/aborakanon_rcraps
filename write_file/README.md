@@ -24,12 +24,15 @@ func main() {
         {0xe3, 0x81, 0xa7}, // で
         {0xe3, 0x81, 0x8c}, // が
         {0xe3, 0x81, 0x91}, // け
+        {0xe3, 0x81, 0x93}, // 
+        {0xe3, 0x81, 0xa9}, // ど
+        {0xe3, 0x81, 0x98}, // 
     }
 
     // Mendeklarasikan slice dari string dengan tipe []string
     var labels []string = []string{
-        " (go)", " (ha)", " (mi)", " (zu)", " (hi)",
-        " (to)", " (sa)", " (se)", " (de)", " (ga)", " (ke)",
+        " (go) 1", " (ha) 2", " (mi) 3", " (zu) 4", " (hi) 5",
+        " (to) 6", " (sa) 7", " (se) 8", " (de) 9", " (ga) 10", " (ke) 11", " (ko) 12", " (do) 13", " (ji) 14",
     }
 
     // Mendeklarasikan variabel file bertipe *os.File
